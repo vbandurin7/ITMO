@@ -1,0 +1,34 @@
+grammar Calculator;
+
+E [double val : synthesized;]
+T [double val : synthesized;]
+P [double val : synthesized;]
+EP [double val : synthesized; double acc : inherited;]
+TP [double val : synthesized; double acc : inherited;]
+PP [double val : synthesized; double acc : inherited;]
+F [double val : synthesized;]
+
+E -> T EP {((T) res.getChildren().get("T")).val}; {res.val = ((EP) res.getChildren().get("EP")).val;}
+EP -> add T EP {acc + ((T) res.getChildren().get("T")).val}; {res.val = ((EP) res.getChildren().get("EP")).val;}
+EP -> sub T EP {acc - ((T) res.getChildren().get("T")).val}; {res.val = ((EP) res.getChildren().get("EP")).val;}
+EP -> eps; {res.val = acc;}
+T -> P TP{((P) res.getChildren().get("P")).val}; {res.val = ((TP) res.getChildren().get("TP")).val;}
+TP -> mul P TP {acc * ((P) res.getChildren().get("P")).val}; {res.val = ((TP) res.getChildren().get("TP")).val;}
+TP -> div P TP {acc / ((P) res.getChildren().get("P")).val}; {res.val = ((TP) res.getChildren().get("TP")).val;}
+TP -> eps; {res.val = acc;}
+P -> F PP {((F) res.getChildren().get("F")).val}; {res.val = ((PP) res.getChildren().get("PP")).val;}
+PP -> pow P; {res.val = Math.pow(acc, ((P) res.getChildren().get("P")).val);}
+PP -> eps; {res.val = acc;}
+F -> sub F; {res.val = -1 * ((F) res.getChildren().get("F")).val;}
+F -> n; {res.val = Double.parseDouble(token.value());}
+F -> lparen E rparen; {res.val = ((E) res.getChildren().get("E")).val;}
+
+lparen -> "\(";
+rparen -> "\)";
+add -> "\+";
+sub -> "-";
+mul -> "\*";
+div -> "/";
+pow -> "\^";
+n -> "(-)?[0-9]+(\\.[0-9]+)?";
+whitespace -> "[ \n\t\r]+";

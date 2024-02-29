@@ -1,0 +1,31 @@
+grammar Lab2Parser;
+
+E []
+T []
+EP []
+TP []
+F []
+U []
+
+E -> T EP;
+EP -> or T EP;
+EP -> xor T EP;
+EP -> eps;
+T -> F TP;
+TP -> and F TP;
+TP -> eps;
+F -> not F;
+F -> var U;
+F -> lparen E rparen;
+U -> not U;
+U -> in var;
+
+or -> "or";
+xor -> "xor";
+and -> "and";
+not -> "not";
+lparen -> "\(";
+rparen -> "\)";
+in -> "in";
+var -> "[a-z]";
+whitespace -> "[ \n\t\r]+";

@@ -1,0 +1,15 @@
+public class JavaExample {
+
+    public JavaExample(int a, long b) {
+    }
+
+    public long methodCall(long c) {
+        for (int i = 0; i < 5; i = i + 1) {
+            call();
+        }
+
+        for (;;) {
+            emptyFor();
+        }
+    }
+}
